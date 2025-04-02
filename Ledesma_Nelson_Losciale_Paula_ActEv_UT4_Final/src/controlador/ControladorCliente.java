@@ -1,31 +1,42 @@
 package controlador;
 
-import java.util.ArrayList;
-
 import modelo.Cliente;
-import modelo.Habitacion;
 
-class ControladorCliente {
-    private ArrayList<Cliente> clientes;
+import java.util.ArrayList;
+import java.util.List;
 
-    // Constructor
+public class ControladorCliente {
+
+    private List<Cliente> clientes;
+
     public ControladorCliente() {
         this.clientes = new ArrayList<>();
-        inicializarClientes();
+        agregarClientesDeEjemplo();
     }
 
-    // Inicializar habitaciones con datos de ejemplo
-    public void inicializarClientes() {
-        clientes.add(new Cliente(1234, "Julian Alvarez"));
-        clientes.add(new Cliente(5678, "Lionel Messi"));
-        clientes.add(new Cliente(4123, "Paula Losciale"));
-    } 
+    // Agregamos 3 clientes de ejemplo
+    private void agregarClientesDeEjemplo() {
+        Cliente cliente1 = new Cliente(1234, "Juan Pérez");
+        Cliente cliente2 = new Cliente(2433, "Ana Gómez");
+        Cliente cliente3 = new Cliente(3447, "Carlos Díaz");
 
-    public void probando1() {
-        System.out.println("Funciona che");
+        clientes.add(cliente1);
+        clientes.add(cliente2);
+        clientes.add(cliente3);
     }
-    
-    public void clientes() {
-        
+
+    // Obtener todos los clientes
+    public List<Cliente> getClientes() {
+        return clientes;
+    }
+
+    // Obtener un cliente por su ID
+    public Cliente obtenerClientePorId(int id) {
+        for (Cliente cliente : clientes) {
+            if (cliente.getId() == id) {
+                return cliente;
+            }
+        }
+        return null;  // Si no se encuentra el cliente
     }
 }
