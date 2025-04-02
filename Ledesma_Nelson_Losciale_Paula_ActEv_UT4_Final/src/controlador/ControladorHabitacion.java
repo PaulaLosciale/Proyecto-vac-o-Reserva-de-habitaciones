@@ -1,48 +1,83 @@
 package controlador;
 
-class ControladorHabitacion {
+import modelo.Habitacion;
+import modelo.Habitacion.tipoHabitacion;
+import modelo.Habitacion.estadoHabitacion;
 
-    // Atributos
-    private int numeroHabitacion;
-    private double precioPorNoche;
-    private int cantidadPersonas;
-    private String descripcion;
-    private tipoHabitacion tipo;
-    private estadoHabitacion estado;
-    
-    // Enum tipo habitacion
-    public enum tipoHabitacion {
-        INDIVIDUAL,
-        DOBLE,
-        SUITE
-    }
-    
-    // Enum estado habitacion
-    public enum estadoHabitacion {
-        DISPONIBLE,
-        RESERVADA,
-        OCUPADA
-    }
-    
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class ControladorHabitacion {
+    private ArrayList<Habitacion> habitaciones;
+
     // Constructor
-    public Habitacion(int numeroHabitacion, double precioPorNoche, int cantidadPersonas, String descripcion, tipoHabitacion tipo, estadoHabitacion estado) {
-        this.numeroHabitacion = numeroHabitacion;
-        this.precioPorNoche = precioPorNoche;
-        this.cantidadPersonas = cantidadPersonas;
-        this.descripcion = descripcion;
-        this.tipo = tipo;
-        this.estado = estado;
-    }
-    
-    void infomacioHabitacion() {
-        System.out.println("-------------------------------------");
-        System.out.println("Numero de habitación: " + numeroHabitacion);
-        System.out.println("Precio por noche: " + precioPorNoche);
-        System.out.println("Cantidad de personas: " + cantidadPersonas);
-        System.out.println("Descripción: " + descripcion);
-        System.out.println("Tipo de habitación: " + tipo);
-        System.out.println("Estado de habitación: " + estado);
-        System.out.println("-------------------------------------");
+    public ControladorHabitacion() {
+        this.habitaciones = new ArrayList<>();
+        inicializarHabitaciones();
     }
 
+    // Inicializar habitaciones con datos de ejemplo
+    public void inicializarHabitaciones() {
+        habitaciones.add(new Habitacion(101, 50.0, 1, "Vista al jardín", tipoHabitacion.INDIVIDUAL, estadoHabitacion.DISPONIBLE));
+        habitaciones.add(new Habitacion(202, 80.0, 2, "Cama doble", tipoHabitacion.DOBLE, estadoHabitacion.DISPONIBLE));
+        habitaciones.add(new Habitacion(303, 150.0, 4, "Suite con jacuzzi", tipoHabitacion.SUITE, estadoHabitacion.RESERVADA));
+    }
+
+    // Mostrar todas las habitaciones disponibles
+    public void mostrarHabitacionesDisponibles() {
+        try {
+            System.out.println("Habitaciones disponibles:");
+            for (Habitacion habitacion : habitaciones) {
+                if (habitacion.getEstado() == estadoHabitacion.DISPONIBLE) {
+                    System.out.println("--------------------------------------------------------------------------------");
+                    System.out.println("Número: " + habitacion.getNumeroHabitacion() +
+                            "| Tipo: " + habitacion.getTipo() +
+                            "| Precio por noche: $" + habitacion.getPrecioPorNoche() +
+                            "| Descripción: " + habitacion.getDescripcion());
+                    System.out.println("--------------------------------------------------------------------------------");
+                }
+            }
+            } catch (Exception NullPointerException) {
+                System.out.println("Habitaciones actualmente no disponibles");
+            }
+    }
+
+    // Mostrar todas las habitaciones en estados actual
+    public void mostrarHabitacionesEnEstadoActual() {
+        try {
+            System.out.println("--------------------------------------------------------------------------------");
+            System.out.println("Habitaciones disponibles:");
+            for (Habitacion habitacion : habitaciones) {
+                System.out.println("Número: " + habitacion.getNumeroHabitacion() +
+                    "| Tipo: " + habitacion.getTipo() +
+                    "| Precio por noche: $" + habitacion.getPrecioPorNoche() +
+                    "| Descripción: " + habitacion.getDescripcion());
+            }
+            } catch (Exception NullPointerException) {
+                System.out.println("Habitaciones actualmente no disponibles");
+            }
+    }
+
+    // Reservar una habitación
+    public void reservarHabitacion(int numeroHabitacion) {
+        try {    
+        for (Habitacion habitacion : habitaciones) {
+            if (habitacion.getNumeroHabitacion() == numeroHabitacion) {
+                if (habitacion.getEstado() == estadoHabitacion.DISPONIBLE) {
+                    habitacion.setEstado(estadoHabitacion.RESERVADA);
+                    System.out.println("La habitación " + numeroHabitacion + " ha sido reservada exitosamente.");
+                } else {
+                    System.out.println("La habitación " + numeroHabitacion + " no está disponible.");
+                }
+                return;
+            }
+        }
+            System.out.println("No se encontró una habitación con el número proporcionado.");
+        
+        } catch (Exception NullPointerException) {
+            System.out.println("Actualmente no se puede acceder al servicio ");
+        }
+    }
 }
